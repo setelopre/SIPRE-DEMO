@@ -638,44 +638,4 @@ public class CombosDAOImpl implements CombosDAO {
         return lista;
     }
 
-    @Override
-    public List getGenericaGastoUnidad(String periodo, Integer presupuesto, String unidadOperativa) {
-        lista = new LinkedList<>();
-        sql = "SELECT TRIM(CODGEN) AS CODIGO, TRIM(CODGEN)||':'||UTIL_NEW.FUN_NOMGEN(TRIM(CODGEN)) AS DESCRIPCION "
-                + "FROM MODEPA WHERE "
-                + "CODPER=? AND "
-                + "COPPTO=? AND "
-                + "COUUOO=? "
-                + "GROUP BY TRIM(CODGEN) "
-                + "UNION ALL "
-                + "SELECT DISTINCT '*' AS CODIGO, 'TODAS LAS GENERICAS' AS DESCRIPCION "
-                + "FROM DUAL "
-                + "ORDER BY CODIGO";
-        try {
-            objPreparedStatement = objConnection.prepareStatement(sql);
-            objPreparedStatement.setString(1, periodo);
-            objPreparedStatement.setInt(2, presupuesto);
-            objPreparedStatement.setString(3, unidadOperativa);
-            objResultSet = objPreparedStatement.executeQuery();
-            while (objResultSet.next()) {
-                comun = new BeanComun();
-                comun.setCodigo(objResultSet.getString("CODIGO"));
-                comun.setDescripcion(objResultSet.getString("DESCRIPCION"));
-                lista.add(comun);
-            }
-        } catch (SQLException e) {
-            System.out.println("Error al obtener getGenericaGastoUnidad(" + periodo + ", " + presupuesto + ", " + unidadOperativa + ") " + e.getMessage());
-        } finally {
-            try {
-                if (objResultSet != null) {
-                    objResultSet.close();
-                    objPreparedStatement.close();
-                }
-            } catch (SQLException e) {
-                System.out.println(e.getMessage());
-            }
-        }
-        return lista;
-    }
-
 }

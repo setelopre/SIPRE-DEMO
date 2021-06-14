@@ -52,7 +52,5 @@ public interface CombosDAO {
     
     public List getUsuarioSubDecreto(String area, String codusu);
 
-    public List getGenericaGastoUnidad(String periodo, Integer presupuesto, String unidadOperativa);
-
     
 }
